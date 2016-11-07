@@ -23,18 +23,25 @@ def get_comments(redditUsername):
     comments = ''
     r = praw.Reddit('markov_impersonator')
     user = r.get_redditor(redditUsername)
-    for comment in user.get_comments(limit=250):
-        comments = comments + ' ' + comment.body
+    try:
+        for comment in user.get_comments(limit=250):
+            comments = comments + ' ' + comment.body
 
-    sentence = markov.makeSentence(comments)
-    return jsonify({
-    'reddit_username': redditUsername,
-    'generated_sentence': sentence
-    })
+        sentence = markov.makeSentence(comments)
+
+        if comments == 'null':
+            sentence = markov.makeSentence(comments)
+
+        return jsonify({
+        'reddit_username': redditUsername,
+        'generated_sentence': sentence
+        })
+    except:
+        return jsonify({"error": "username not found"})
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return 'This page does not exist', 404
+    return jsonify({'error': 404, 'message': 'This page does not exist'}), 404
 
 if __name__ == '__main__':
     app.debug = True
