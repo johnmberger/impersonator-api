@@ -1,1 +1,1 @@
-web: python3 src/router.py
+web: python src/router.py
