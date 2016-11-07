@@ -8,8 +8,14 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return jsonify({
-        "hello": 'This API scrapes reddit user comments and then generates a sentence based on those comments using NLP'
-        "endpoint": 'https://impersonator.herokuapp.com/reddit/<REDDIT_USERNAME>'
+        'hello': 'This API scrapes reddit user comments and then generates a sentence based on those comments using NLP',
+        'endpoint': 'https://impersonator.herokuapp.com/reddit/'
+    })
+
+@app.route('/')
+def reddit_instructions():
+    return jsonify({
+        'hello': 'add a reddit username to the url to generate a comment for that username. (usernames are case sensitive!)'
     })
 
 @app.route('/reddit/<redditUsername>')
@@ -22,8 +28,8 @@ def get_comments(redditUsername):
 
     sentence = markov.makeSentence(comments)
     return jsonify({
-    "reddit_username": redditUsername,
-    "generated_sentence": sentence
+    'reddit_username': redditUsername,
+    'generated_sentence': sentence
     })
 
 @app.errorhandler(404)
