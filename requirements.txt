@@ -1,6 +1,7 @@
 click==6.6
 decorator==4.0.10
 Flask==0.11.1
+Flask-Cors==3.0.2
 itsdangerous==0.24
 Jinja2==2.8
 markovify==0.4.3
