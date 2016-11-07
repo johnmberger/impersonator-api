@@ -1,1 +1,1 @@
-web: python src/router.py
+web: flask run
