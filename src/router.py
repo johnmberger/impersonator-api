@@ -12,7 +12,7 @@ def hello_world():
         'endpoint': 'https://impersonator.herokuapp.com/reddit/'
     })
 
-@app.route('/')
+@app.route('/reddit')
 def reddit_instructions():
     return jsonify({
         'hello': 'add a reddit username to the url to generate a comment for that username. (usernames are case sensitive!)'
