@@ -8,12 +8,9 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return jsonify({
-        'hi': 'Hello World!'
+        "hello": 'This API scrapes reddit user comments and then generates a sentence based on those comments using NLP'
+        "endpoint": 'https://impersonator.herokuapp.com/reddit/<REDDIT_USERNAME>'
     })
-
-@app.route('/<word>')
-def hello_hell(word):
-    return jsonify({"url param": word})
 
 @app.route('/reddit/<redditUsername>')
 def get_comments(redditUsername):
@@ -24,12 +21,14 @@ def get_comments(redditUsername):
         comments = comments + ' ' + comment.body
 
     sentence = markov.makeSentence(comments)
-    if sentence == 'null':
-        sentence = markov.makeSentence(comments)
     return jsonify({
-    "username": redditUsername,
-    "sentence": sentence
+    "reddit_username": redditUsername,
+    "generated_sentence": sentence
     })
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'This page does not exist', 404
 
 if __name__ == '__main__':
     app.debug = True
