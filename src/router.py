@@ -26,7 +26,10 @@ def get_comments(redditUsername):
     sentence = markov.makeSentence(comments)
     if sentence == 'null':
         sentence = markov.makeSentence(comments)
-    return jsonify({"sentence": sentence})
+    return jsonify({
+    "username": redditUsername,
+    "sentence": sentence
+    })
 
 if __name__ == '__main__':
     app.debug = True
