@@ -1,9 +1,12 @@
 import os
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 import markov
 import praw
 
 app = Flask(__name__)
+
+CORS(app)
 
 @app.route('/')
 def hello_world():
