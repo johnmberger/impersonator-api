@@ -47,17 +47,26 @@ def get_comments(redditUsername):
     except:
         return jsonify({"error": "username not found"}), 404
 
+@app.route('/reddit')
+def reddit_instructions():
+    return jsonify({
+        'hello': 'add a twitter handle to the url to generate a tweet for that username.'
+    })
+
 @app.route('/twitter/<twitterHandle>')
 def get_tweets(twitterHandle):
     new_tweets = api.GetUserTimeline(screen_name=twitterHandle)
-    tweets = ''
-    for tweet in new_tweets:
-        tweets = tweets + ' ' + tweet.text
 
-    print (tweets)
-    tweet = markov.makeTweet(tweets)
-    return jsonify({'tweet': tweet})
+    try:
+        tweets = ''
+        for tweet in new_tweets:
+            tweets = tweets + ' ' + tweet.text
 
+        tweet = markov.makeTweet(tweets)
+        return jsonify({'tweet': tweet})
+
+    except:
+        return jsonify({"error": "something went wrong"}), 404
 
 @app.errorhandler(404)
 def page_not_found(error):
