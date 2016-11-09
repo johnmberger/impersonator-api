@@ -4,6 +4,12 @@ from flask_cors import CORS, cross_origin
 import markov
 import praw
 
+import twitter
+api = twitter.Api(consumer_key='',
+    consumer_secret='',
+    access_token_key='',
+    access_token_secret='')
+
 app = Flask(__name__)
 
 CORS(app)
@@ -26,21 +32,32 @@ def get_comments(redditUsername):
     comments = ''
     r = praw.Reddit('markov_impersonator')
     user = r.get_redditor(redditUsername)
+
     try:
         for comment in user.get_comments(limit=250):
             comments = comments + ' ' + comment.body
 
         sentence = markov.makeSentence(comments)
 
-        if comments == 'null':
-            sentence = markov.makeSentence(comments)
-
         return jsonify({
         'reddit_username': redditUsername,
         'generated_sentence': sentence
         })
+
     except:
-        return jsonify({"error": "username not found"})
+        return jsonify({"error": "username not found"}), 404
+
+@app.route('/twitter/<twitterHandle>')
+def get_tweets(twitterHandle):
+    new_tweets = api.GetUserTimeline(screen_name=twitterHandle)
+    tweets = ''
+    for tweet in new_tweets:
+        tweets = tweets + ' ' + tweet.text
+
+    print (tweets)
+    tweet = markov.makeTweet(tweets)
+    return jsonify({'tweet': tweet})
+
 
 @app.errorhandler(404)
 def page_not_found(error):
