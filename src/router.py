@@ -18,7 +18,7 @@ CORS(app)
 def hello_world():
     return jsonify({
         'hello': 'This API scrapes reddit user comments and then generates a sentence based on those comments using NLP',
-        'endpoint': 'https://impersonator.herokuapp.com/reddit/'
+        'endpoint': 'https://impersonator.herokuapp.com/reddit'
     })
 
 @app.route('/reddit')
@@ -47,7 +47,7 @@ def get_comments(redditUsername):
     except:
         return jsonify({"error": "username not found"}), 404
 
-@app.route('/reddit')
+@app.route('/twitter')
 def reddit_instructions():
     return jsonify({
         'hello': 'add a twitter handle to the url to generate a tweet for that username.'
